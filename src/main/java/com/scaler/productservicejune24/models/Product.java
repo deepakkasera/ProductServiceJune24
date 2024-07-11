@@ -1,12 +1,24 @@
 package com.scaler.productservicejune24.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Product extends BaseModel {
+@Entity
+public class Product extends BaseModel { //product
     private String title;
     private double price;
+    @ManyToOne
     private Category category;
 }
+
+/*
+
+   1             1
+Product ----- Category => M:1
+   M             1
+
+ */
