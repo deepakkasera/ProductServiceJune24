@@ -77,11 +77,11 @@ public class SelfProductService implements ProductService {
     public Product addNewProduct(Product product) {
         Category category = product.getCategory();
 
-        if (category.getId() == null) {
-            // We need to create a new Category object in the DB first.
-            category = categoryRepository.save(category);
-            product.setCategory(category);
-        }
+//        if (category.getId() == null) {
+//            // We need to create a new Category object in the DB first.
+//            category = categoryRepository.save(category);
+//            product.setCategory(category);
+//        }
 
         return productRepository.save(product);
     }
