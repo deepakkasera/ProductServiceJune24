@@ -4,9 +4,9 @@ import com.scaler.productservicejune24.dtos.FakeStoreProductDto;
 import com.scaler.productservicejune24.exceptions.ProductNotFoundException;
 import com.scaler.productservicejune24.models.Category;
 import com.scaler.productservicejune24.models.Product;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
@@ -20,17 +20,25 @@ import java.util.List;
 //@Primary
 public class FakeStoreProductService implements ProductService {
     private RestTemplate restTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public FakeStoreProductService(RestTemplate restTemplate) {
+    public FakeStoreProductService(RestTemplate restTemplate,
+                                   RedisTemplate redisTemplate) {
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public Product getSingleProduct(Long productId) throws ProductNotFoundException {
-
-
 //        throw new RuntimeException("Something went wrong");
 
+        //Try to fetch the product from redis.
+        Product product = (Product) redisTemplate.opsForHash().get("PRODUCTS", "PRODUCT_" + productId);
+
+        if (product != null) {
+            //Cache HIT
+            return product;
+        }
 
 //        //Call FakeStore to fetch the Product with given id. => HTTP Call.
         FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject(
@@ -43,7 +51,13 @@ public class FakeStoreProductService implements ProductService {
         }
 
         //Convert FakeStoreProductDto into Product.
-        return convertFakeStoreProductToProduct(fakeStoreProductDto);
+        //Cache MISS
+        product = convertFakeStoreProductToProduct(fakeStoreProductDto);
+
+        //Store the product in redis.
+        redisTemplate.opsForHash().put("PRODUCTS", "PRODUCT_" + productId, product);
+
+        return product;
     }
 
     @Override

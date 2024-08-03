@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
 
-    public ProductController(@Qualifier("selfProductService")
+    public ProductController(@Qualifier("fakeStoreProductService")
                              ProductService productService) {
         this.productService = productService;
     }
