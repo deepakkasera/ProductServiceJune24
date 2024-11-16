@@ -1,16 +1,6 @@
 package com.scaler.productservicejune24;
 
-import com.scaler.productservicejune24.models.Category;
-import com.scaler.productservicejune24.models.Product;
-import com.scaler.productservicejune24.projections.ProductWithIdAndTitle;
-import com.scaler.productservicejune24.repositories.CategoryRepository;
-import com.scaler.productservicejune24.repositories.ProductRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 class ProductServiceJune24ApplicationTests {
@@ -45,6 +35,8 @@ class ProductServiceJune24ApplicationTests {
 //
 //        System.out.println("DEBUG");
 //    }
+
+
 
 }
 

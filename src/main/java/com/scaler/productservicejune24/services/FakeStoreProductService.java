@@ -32,11 +32,12 @@ public class FakeStoreProductService implements ProductService {
     public Product getSingleProduct(Long productId) throws ProductNotFoundException {
 //        throw new RuntimeException("Something went wrong");
 
-        //Try to fetch the product from redis.
+
+        //Check if this product is available in REDIS or not ?
         Product product = (Product) redisTemplate.opsForHash().get("PRODUCTS", "PRODUCT_" + productId);
 
+        //Cache HIT
         if (product != null) {
-            //Cache HIT
             return product;
         }
 
@@ -50,18 +51,16 @@ public class FakeStoreProductService implements ProductService {
             throw new ProductNotFoundException("Product with id " + productId + " doesn't exist");
         }
 
-        //Convert FakeStoreProductDto into Product.
-        //Cache MISS
         product = convertFakeStoreProductToProduct(fakeStoreProductDto);
 
-        //Store the product in redis.
+        //Before returning the product, store it in the Redis.
         redisTemplate.opsForHash().put("PRODUCTS", "PRODUCT_" + productId, product);
 
         return product;
     }
 
     @Override
-    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+    public List<Product> getAllProducts() {
         FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForObject(
                 "https://fakestoreapi.com/products",
                 FakeStoreProductDto[].class
@@ -73,7 +72,7 @@ public class FakeStoreProductService implements ProductService {
             products.add(convertFakeStoreProductToProduct(fakeStoreProductDto));
         }
 
-        return new PageImpl<>(products);
+        return products;
     }
 
     //Partial Update

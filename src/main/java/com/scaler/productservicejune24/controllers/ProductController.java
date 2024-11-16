@@ -19,7 +19,7 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
 
-    public ProductController(@Qualifier("fakeStoreProductService")
+    public ProductController(@Qualifier("selfProductService")
                              ProductService productService) {
         this.productService = productService;
     }
@@ -52,9 +52,24 @@ public class ProductController {
         return response;
     }
 
+//    @GetMapping()
+//    public Page<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
+//        return productService.getAllProducts(pageNumber, pageSize);
+//    }
+
     @GetMapping()
-    public Page<Product> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize) {
-        return productService.getAllProducts(pageNumber, pageSize);
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts(); // @123, @345, @789
+
+//        List<Product> products1 = new ArrayList<>();
+
+//        for (Product product : products) {
+//            Product p = new Product();
+//            p.setTitle("Random");
+//            products1.add(p);
+//        } // @123, @345, @789
+
+//        products1.get(0).setTitle("Random Title");
     }
 
     @DeleteMapping("/{id}")

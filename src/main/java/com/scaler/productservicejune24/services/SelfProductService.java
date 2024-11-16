@@ -6,6 +6,7 @@ import com.scaler.productservicejune24.models.Category;
 import com.scaler.productservicejune24.models.Product;
 import com.scaler.productservicejune24.repositories.CategoryRepository;
 import com.scaler.productservicejune24.repositories.ProductRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Service("selfProductService")
 public class SelfProductService implements ProductService {
     private ProductRepository productRepository;
@@ -37,17 +39,32 @@ public class SelfProductService implements ProductService {
         return productOptional.get();
     }
 
+//    @Override
+//    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+//
+////        Sort sort = Sort.by("price").ascending().and(Sort.by("title").descending())
+////        Sort.by("price").ascending().and(Sort.by("title").ascending().and(Sort.by("quantity").ascending()
+//
+//        return productRepository.findAll(
+//                PageRequest.of(pageNumber,
+//                        pageSize,
+//                        Sort.by("price").ascending())
+//        );
+//    }
+
     @Override
-    public Page<Product> getAllProducts(int pageNumber, int pageSize) {
+    public List<Product> getAllProducts() {
 
 //        Sort sort = Sort.by("price").ascending().and(Sort.by("title").descending())
 //        Sort.by("price").ascending().and(Sort.by("title").ascending().and(Sort.by("quantity").ascending()
 
-        return productRepository.findAll(
-                PageRequest.of(pageNumber,
-                        pageSize, 
-                        Sort.by("price").ascending())
-        );
+//        return productRepository.findAll(
+//                PageRequest.of(pageNumber,
+//                        pageSize,
+//                        Sort.by("price").ascending())
+//        );
+
+        return productRepository.findAll();
     }
 
     //PATCH
