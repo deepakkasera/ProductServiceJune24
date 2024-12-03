@@ -30,9 +30,9 @@ public class ProductController {
     }
 
     // http://localhost:8080/products/10
-    //@GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
-
+        System.out.println("Got the request in ProductService!!");
 //        throw new RuntimeException("Something went wrong");
 //        ResponseEntity<Product> responseEntity = null;
 //
@@ -62,41 +62,41 @@ public class ProductController {
 //        return productService.getAllProducts(pageNumber, pageSize);
 //    }
 
-    @GetMapping("/{tokenValue}")
-    public ResponseEntity<List<Product>> getAllProducts(@PathVariable String tokenValue) {
-
-        //Make a call to UserService to validate the token.
-        UserDto userDto = authUtil.validateToken(tokenValue);
-
-        ResponseEntity<List<Product>> responseEntity = null;
-
-        if (userDto == null) {
-            //Token is invalid;
-            responseEntity = new ResponseEntity<>(
-                    HttpStatus.UNAUTHORIZED
-            );
-
-            return responseEntity;
-        }
-
-
-        responseEntity = new ResponseEntity<>(
-                productService.getAllProducts(),
-                HttpStatus.OK
-        );
-
-        return responseEntity;
-
-//        List<Product> products1 = new ArrayList<>();
-
-//        for (Product product : products) {
-//            Product p = new Product();
-//            p.setTitle("Random");
-//            products1.add(p);
-//        } // @123, @345, @789
-
-//        products1.get(0).setTitle("Random Title");
-    }
+//    @GetMapping("/{tokenValue}")
+//    public ResponseEntity<List<Product>> getAllProducts(@PathVariable String tokenValue) {
+//
+//        //Make a call to UserService to validate the token.
+//        UserDto userDto = authUtil.validateToken(tokenValue);
+//
+//        ResponseEntity<List<Product>> responseEntity = null;
+//
+//        if (userDto == null) {
+//            //Token is invalid;
+//            responseEntity = new ResponseEntity<>(
+//                    HttpStatus.UNAUTHORIZED
+//            );
+//
+//            return responseEntity;
+//        }
+//
+//
+//        responseEntity = new ResponseEntity<>(
+//                productService.getAllProducts(),
+//                HttpStatus.OK
+//        );
+//
+//        return responseEntity;
+//
+////        List<Product> products1 = new ArrayList<>();
+//
+////        for (Product product : products) {
+////            Product p = new Product();
+////            p.setTitle("Random");
+////            products1.add(p);
+////        } // @123, @345, @789
+//
+////        products1.get(0).setTitle("Random Title");
+//    }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") Long productId) {
